@@ -100,7 +100,7 @@ public class PlayerProc : MonoBehaviour
                 lastInputValue = inputValue;
             }
 
-            MoveProc(inputValue, velocity, maxMoveVel, moveACC);
+            MoveProc(inputValue, maxMoveVel, moveACC);
         }
         // ダッシュ中の処理
         else if (moveState == PlayerState.move_state.Dash)
@@ -115,7 +115,7 @@ public class PlayerProc : MonoBehaviour
                 lastInputValue = inputValue;
             }
 
-            MoveProc(inputValue, velocity, maxDashVel, DashACC);
+            MoveProc(inputValue, maxDashVel, DashACC);
             // 当たり判定を有効化
             dashColl.enabled = true;
         }
@@ -158,7 +158,7 @@ public class PlayerProc : MonoBehaviour
     /// <param name="_Velocity">     現在の移動速度     </param>
     /// <param name="_MaxVelocity">  移動速度の最大値   </param>
     /// <param name="_Acceleration"> 加速度             </param>
-    private void MoveProc(Vector2 _InputValue, float _Velocity, float _MaxVelocity, float _Acceleration)
+    private void MoveProc(Vector2 _InputValue, float _MaxVelocity, float _Acceleration)
     {
         //上書きされる前に落下の力を記録
         float forceY = ownRB.velocity.y;
@@ -166,7 +166,7 @@ public class PlayerProc : MonoBehaviour
         ownRB.velocity = new Vector3(_InputValue.x, 0, _InputValue.y).normalized;
 
         //加速上限と加速度から速度を求める
-        velocity = Accelerate(_Velocity, _MaxVelocity, _Acceleration);
+        velocity = Accelerate(velocity, _MaxVelocity, _Acceleration);
 
         //速度を移動量に乗算する
         ownRB.velocity *= velocity;

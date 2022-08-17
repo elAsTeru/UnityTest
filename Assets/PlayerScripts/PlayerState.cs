@@ -24,6 +24,8 @@ public class PlayerState : MonoBehaviour
         Jump            //ジャンプ
     }
 
+    [SerializeField]ScriptablePlayer playerData;
+
     [Header("状態情報")]
     [Tooltip("移動状態")][SerializeField] move_state moveState;
     [Tooltip("攻撃状態")][SerializeField] attack_state atkState;
@@ -31,7 +33,9 @@ public class PlayerState : MonoBehaviour
 
     [Header("ステータス設定")]
     [Tooltip("プレイヤー番号")][SerializeField] short playerNumber = 1;
-    [Tooltip("スタミナ上限値")][SerializeField] float maxStamina = 100.0f;
+
+    float maxStamina;
+
     [Tooltip("スタミナ減少量")][SerializeField] float subStamina = 0.5f;
     [Tooltip("スタミナ回復量")][SerializeField] float recovStamina = 2.0f;
     [Header("ステータス情報")]
@@ -43,7 +47,9 @@ public class PlayerState : MonoBehaviour
 
     [Header("移動設定")]
     [Tooltip("ダッシュキー")][SerializeField] KeyCode dashKey = KeyCode.LeftShift;
-    [Tooltip("一回のダッシュ時間")][SerializeField] float dashTimeOnce = 0.5f;
+
+    float dashTimeOnce = 0.5f;
+
     [Header("移動情報")]
     [Tooltip("ダッシュフラグ")][SerializeField] bool isDash;
     [Tooltip("移動量")][SerializeField] Vector2 inputValue;
@@ -100,7 +106,8 @@ public class PlayerState : MonoBehaviour
 
     private void Start()
     {
-        
+        maxStamina = playerData.Stamina;
+        dashTimeOnce = playerData.DashTimeOnce;
     }
 
     private void Init()
@@ -110,62 +117,13 @@ public class PlayerState : MonoBehaviour
 
     public void StateUpdate()
     {
-        CheckMoveState();
+        //CheckMoveState();
         CheckAtkState();
         CheckOtherState();
     }
 
     void CheckMoveState()
     {
-        //Idol
-        {
-            //アイドル状態に
-            moveState = move_state.Idol;
-        }
-        //Move
-        {
-            //移動入力チェック
-            inputValue.x = Input.GetAxis("Horizontal" + playerNumber);
-            inputValue.y  = Input.GetAxis("Vertical"   + playerNumber);
-            //移動入力されてれば
-            if(inputValue.x != 0 || inputValue.y != 0)
-            {
-                //移動状態に
-                moveState = move_state.Move;
-            }
-        }
-        //Dash
-        {
-            if(moveState == move_state.Move && Input.GetKey(dashKey)&& isGround || isDash)
-            {
-                //スタミナがあれば
-                if(stamina > 0)
-                {
-                    //スタミナを減らす
-                    stamina -= subStamina;
-                    //ダッシュ状態に
-                    moveState = move_state.Dash;
-
-                    //もしダッシュフラグがOnでなかったら
-                    if(!isDash)
-                    {
-                        //ダッシュフラグをOnに
-                        isDash = true;
-                        //タイマーをリセット
-                        timer = 0.0f;
-                    }
-                    else
-                    {
-                        //時間計測
-                        timer += Time.deltaTime;
-                        if(timer > dashTimeOnce || stamina <= 0)
-                        {
-                            isDash = false;
-                        }
-                    }
-                }
-            }
-        }
         //毎回処理
         {
             //スタミナ回復

@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 209201488}
   - component: {fileID: 209201487}
   - component: {fileID: 209201486}
+  - component: {fileID: 209201494}
   - component: {fileID: 209201490}
   - component: {fileID: 209201493}
   - component: {fileID: 209201489}
@@ -239,18 +240,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87530598d3a8ec44e845239a83f77c9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: fb07a7eb6719baf4cb9d3eb65e35f7b8, type: 2}
   moveState: 0
   atkState: 0
   otherState: 0
   playerNumber: 1
-  maxStamina: 100
   subStamina: 0.5
   recovStamina: 2
   stamina: 0
   timer: 0
   rb: {fileID: 0}
   dashKey: 304
-  dashTimeOnce: 0.5
   isDash: 0
   inputValue: {x: 0, y: 0}
   atkButton: 323
@@ -304,6 +304,24 @@ MonoBehaviour:
   jumpPower: 400
   DashACC: 10
   maxDashVel: 10
+--- !u!114 &209201494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209201482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e486e35474b386249851394ae1faef33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nowState: 
+  data: {fileID: 11400000, guid: fb07a7eb6719baf4cb9d3eb65e35f7b8, type: 2}
+  playerNumber: 1
+  dashKey: 304
+  jumpKey: 32
+  groundJudgDist: 1
 --- !u!1 &355734097
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,18 +651,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87530598d3a8ec44e845239a83f77c9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: fb07a7eb6719baf4cb9d3eb65e35f7b8, type: 2}
   moveState: 0
   atkState: 0
   otherState: 0
   playerNumber: 2
-  maxStamina: 100
   subStamina: 0.5
   recovStamina: 2
   stamina: 0
   timer: 0
   rb: {fileID: 0}
   dashKey: 303
-  dashTimeOnce: 0.5
   isDash: 0
   inputValue: {x: 0, y: 0}
   atkButton: 324
