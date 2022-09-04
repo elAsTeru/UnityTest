@@ -4,7 +4,7 @@ using UnityEngine;
 
 public partial class Player
 {
-    public class StateDashing : PlayerStateBase
+    public class StateDash : PlayerStateBase
     {
         bool isDash;
         float dashTimer;
@@ -39,7 +39,7 @@ public partial class Player
                         //もしこの時点でダッシュキーが入力されてなければ通常移動に遷移
                         if(!Input.GetKey(owner.dashKey))
                         {
-                            owner.ChangeState(moving);
+                            owner.ChangeMoveState(move);
                         }
                     }
                 }
@@ -50,7 +50,7 @@ public partial class Player
             //通常の移動状態に遷移
             else
             {
-                owner.ChangeState(moving);
+                owner.ChangeMoveState(move);
             }
         }
     }

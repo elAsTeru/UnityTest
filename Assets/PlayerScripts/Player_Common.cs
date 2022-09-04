@@ -8,7 +8,11 @@ public partial class Player : MonoBehaviour
     [Tooltip("プレイ番号")][SerializeField] short playerNumber = 1;
     [SerializeField] KeyCode dashKey = KeyCode.LeftShift;
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
+    [SerializeField] KeyCode SpinKey = KeyCode.Return;
     [Tooltip("接地判定距離")][SerializeField] float groundJudgDist;
+    [Header("当たり判定")]
+    [Tooltip("ダッシュ攻撃あたり判定")][SerializeField] Collider dashColl;
+    [Tooltip("回転攻撃当たり判定")][SerializeField] Collider spinColl;
 
     //設定項目
     Rigidbody rb;           // 物理
@@ -20,6 +24,7 @@ public partial class Player : MonoBehaviour
     float     normalACC;    // 通常移動の加速度
     float     maxDashVel;   // ダッシュの最高速度
     float     dashACC;      // ダッシュの加速度
+    float     jumpPower;    // ジャンプ力
 
 
     //処理更新項目
@@ -37,14 +42,18 @@ public partial class Player : MonoBehaviour
         normalACC    = data.NormalAcceleration;
         maxDashVel   = data.MaxDashVelocity;
         dashACC      = data.DashAcceleration;
-        OnStart();
+        jumpPower    = data.JumpPower;
+        // 当たり判定を無効化
+        dashColl.enabled = false;
+        spinColl.enabled = false;
+        OnStart();      // プレイヤーの開始
     }
 
     private void Update()
     {
-        CheckIsGround();
-        CheckXYInput();
-        OnUpdate();
+        CheckIsGround();// 接地管理
+        CheckXYInput(); // スティックや移動キーの入力更新
+        OnUpdate();     // プレイヤーの更新
     }
 
     /// <summary>
@@ -64,5 +73,9 @@ public partial class Player : MonoBehaviour
         Vector3 rayPos = transform.position + new Vector3(0, 0, 0);
         Ray ray = new Ray(rayPos, Vector3.down);
         isGround = Physics.Raycast(ray, groundJudgDist);
+    }
+
+    private void HealStamina()
+    { 
     }
 }

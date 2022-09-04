@@ -116,10 +116,8 @@ public class PlayerState : MonoBehaviour
     }
 
     public void StateUpdate()
-    {
-        //CheckMoveState();
-        CheckAtkState();
-        CheckOtherState();
+    { 
+        //CheckOtherState();
     }
 
     void CheckMoveState()
@@ -137,72 +135,6 @@ public class PlayerState : MonoBehaviour
                         stamina = maxStamina;
                     }
                 }
-            }
-        }
-    }
-
-    void CheckAtkState()
-    {
-        //None
-        {
-            atkState = attack_state.None;
-        }
-        //Dash
-        {
-            if(moveState == move_state.Dash)
-            {
-                atkState = attack_state.Dash;
-            }
-        }
-        //Spin
-        {
-            if(Input.GetKey(atkButton) || isSpin)
-            {
-                atkState = attack_state.Spin;
-                if(!isSpin)
-                {
-                    isSpin = true;
-                    timer = 0;
-                }
-                else
-                {
-                    timer += Time.deltaTime;
-                    if(timer > spinTime)
-                    {
-                        isSpin = false;
-                    }
-                }
-
-            }
-        }
-    }
-
-    void CheckOtherState()
-    {
-        //None
-        {
-            otherState = other_state.None;
-        }
-        //Jump
-        {
-            Vector3 rayPos = transform.position + new Vector3(0, 0, 0);
-            Ray ray = new Ray(rayPos, Vector3.down);
-            isGround = Physics.Raycast(ray, distance);
-
-            Debug.DrawRay(rayPos, Vector3.down * distance, Color.red);
-            //接地している/ジャンプ入力している/ジャンプしていない || ジャンプ中
-
-            if (isGround && Input.GetKeyDown(jumpKey) && !isJump)
-            {
-                otherState = other_state.Jump;
-                if(!isJump)
-                {
-                    isJump = true;
-                }
-            }
-            else if(isGround && !Input.GetKeyDown(jumpKey) && isJump)
-            {
-                isJump = false;
             }
         }
     }

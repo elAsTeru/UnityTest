@@ -316,12 +316,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e486e35474b386249851394ae1faef33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nowState: 
+  nowMoveState: Player+StateIdol
+  nowAtkState: Player+StateIdol
   data: {fileID: 11400000, guid: fb07a7eb6719baf4cb9d3eb65e35f7b8, type: 2}
   playerNumber: 1
   dashKey: 304
   jumpKey: 32
+  SpinKey: 13
   groundJudgDist: 1
+  dashColl: {fileID: 1453708591}
+  spinColl: {fileID: 1944528427}
 --- !u!1 &355734097
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,7 +839,7 @@ GameObject:
   - component: {fileID: 1092599097}
   - component: {fileID: 1092599096}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: "\u524D\u3092\u5411\u3044\u3066\u308B\u304B\u78BA\u8A8D\u7528"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1072,7 +1076,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1453708590}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.404}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1167,8 +1171,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1944528426}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.209}
+  m_LocalScale: {x: 2.622, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 209201488}

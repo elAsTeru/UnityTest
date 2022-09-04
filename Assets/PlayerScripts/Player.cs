@@ -4,33 +4,53 @@ using UnityEngine;
 
 public partial class Player
 {
-    // ステートのインスタンス
-    private static readonly StateIdoling idoling     = new StateIdoling();
-    private static readonly StateNormalMoving moving = new StateNormalMoving();
-    private static readonly StateDashing dashing     = new StateDashing();
+    // 移動ステートのインスタンス
+    private static readonly StateIdol idol = new StateIdol();
+    private static readonly StateMove move = new StateMove();
+    private static readonly StateDash dash = new StateDash();
+    private static readonly StateJump jump = new StateJump();
+    // 攻撃ステートのインスタンス
+    private static readonly StateIdolAtk idolAtk = new StateIdolAtk();
+    private static readonly StateDashAtk dashAtk = new StateDashAtk();
+    private static readonly StateSpinAtk spinAtk = new StateSpinAtk();
 
-    [Tooltip("現在のステート")][SerializeField] PlayerStateBase state = idoling;
-    [SerializeField] string nowState = idoling.ToString();   // 現在のステートを仮表示
+    [Tooltip("移動系のステート")][SerializeField] PlayerStateBase moveState = idol;
+    [Tooltip("攻撃系のステート")][SerializeField] PlayerStateBase atkState = idolAtk;
+    
+    [SerializeField] string nowMoveState = idol.ToString();   // 現在のステートを仮表示 // デバッグ用
+    [SerializeField] string nowAtkState = idol.ToString();   // 現在のステートを仮表示 // デバッグ用
 
     // Start()より実行
     private void OnStart()
     {
-        state.OnEnter(this, null);
+        moveState.OnEnter(this, null);
+        atkState.OnEnter(this, null);
     }
 
     // Update()より実行
     private void OnUpdate()
     {
-        state.OnUpdate(this);
+        moveState.OnUpdate(this);
+        atkState.OnUpdate(this);
     }
 
-    private void ChangeState(PlayerStateBase _NextState)
+    private void ChangeMoveState(PlayerStateBase _NextState)
     {
-        state.OnExit(this, _NextState);
-        _NextState.OnEnter(this, state);
-        state = _NextState;
+        moveState.OnExit(this, _NextState);
+        _NextState.OnEnter(this, moveState);
+        moveState = _NextState;
 
         //仮表示の現在のステートを変更
-        nowState = state.ToString();
+        nowMoveState = moveState.ToString();
+    }
+
+    private void ChangeAtkState(PlayerStateBase _NextState)
+    {
+        atkState.OnExit(this, _NextState);
+        _NextState.OnEnter(this, atkState);
+        atkState = _NextState;
+
+        //仮表示の現在のステートを変更
+        nowAtkState = atkState.ToString();
     }
 }

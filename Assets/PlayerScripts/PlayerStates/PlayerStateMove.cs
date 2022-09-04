@@ -5,21 +5,26 @@ public partial class Player
     /// <summary>
     /// ’Êí‚ÌˆÚ“®ó‘Ô
     /// </summary>
-    public class StateNormalMoving : PlayerStateBase
+    public class StateMove : PlayerStateBase
     {
         public override void OnUpdate(Player owner)
         {
             owner.MoveProc(owner.inputValue, owner.velocity, owner.maxNormalVel, owner.normalACC);
 
-            //’Êíó‘Ô‚É‘JˆÚ
-            if (owner.inputValue.x == 0 && owner.inputValue.y == 0)
+            // ƒWƒƒƒ“ƒvó‘Ô‚É‘JˆÚ
+            if(Input.GetKey(owner.jumpKey) && owner.isGround)
             {
-                owner.ChangeState(idoling);
+                owner.ChangeMoveState(jump);
+            }
+            //’Êíó‘Ô‚É‘JˆÚ
+            else if (owner.inputValue.x == 0 && owner.inputValue.y == 0)
+            {
+                owner.ChangeMoveState(idol);
             }
             //ƒ_ƒbƒVƒ…ó‘Ô‚É‘JˆÚ
             else if (Input.GetKey(owner.dashKey) && owner.isGround)
             {
-                owner.ChangeState(dashing);
+                owner.ChangeMoveState(dash);
             }
         }
     }
