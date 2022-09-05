@@ -10,17 +10,10 @@ public partial class Player
             {
                 owner.rb.AddForce(new Vector3(0, owner.jumpPower, 0));
             }
-            else
-            {
-                owner.ChangeMoveState(move);
-            }
         }
         public override void OnUpdate(Player owner)
         {
-            if(owner.isGround)
-            {
-                owner.ChangeMoveState(idol);
-            }
+            owner.ChangeState(idol);
         }
     }
 }

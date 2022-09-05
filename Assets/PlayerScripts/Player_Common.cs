@@ -32,6 +32,35 @@ public partial class Player : MonoBehaviour
     float     velocity;     // 移動速度
     bool      isGround;     // 接地判定
 
+    private void Awake()
+    {
+        //未設定があればAwake最後にデバッグ終了
+        bool exitFlag = false;
+
+        if (!(rb = GetComponent<Rigidbody>()))
+        {
+            Debug.LogError("物理挙動コンポーネントが未設定");
+            exitFlag = true;
+        }
+
+        //タグ設定確認
+        //タグは設定されているか？
+        if (tag == "Untagged")
+        {
+            Debug.LogError(this.gameObject.name + "オブジェクトのタグが設定されていません。");
+            exitFlag = true;
+        }
+
+        if (exitFlag)
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        }
+    }
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -73,9 +102,5 @@ public partial class Player : MonoBehaviour
         Vector3 rayPos = transform.position + new Vector3(0, 0, 0);
         Ray ray = new Ray(rayPos, Vector3.down);
         isGround = Physics.Raycast(ray, groundJudgDist);
-    }
-
-    private void HealStamina()
-    { 
     }
 }

@@ -17,40 +17,36 @@ public partial class Player
 
         public override void OnUpdate(Player owner)
         {
-            if (owner.stamina > 0)
+            // ダッシュフラグが折れていたら
+            if (!isDash)
             {
-                //スタミナ減少
-                owner.stamina -= owner.subStamina;
-
-                if (!isDash)
+                // ダッシュ条件を満たしている
+                if (owner.IsDash())
                 {
+                    // コストを支払ったら
+                    owner.stamina -= owner.subStamina;
+                    // フラグが立つ
                     isDash = true;
-                    dashTimer = 0;
                 }
+                // 満たしてない
                 else
                 {
-                    dashTimer += Time.deltaTime;
-                    if(dashTimer > owner.dashTimeOnce || owner.stamina <= 0)
-                    {
-                        //一回の強制ダッシュ時間を引いておく
-                        dashTimer -= owner.dashTimeOnce;
-                        //ダッシュフラグを一度折る
-                        isDash = false;
-                        //もしこの時点でダッシュキーが入力されてなければ通常移動に遷移
-                        if(!Input.GetKey(owner.dashKey))
-                        {
-                            owner.ChangeMoveState(move);
-                        }
-                    }
+                    owner.ChangeState(move);
                 }
-
-                // ダッシュ処理
-                owner.MoveProc(owner.inputValue, owner.velocity, owner.maxDashVel, owner.dashACC);
             }
-            //通常の移動状態に遷移
-            else
+            // ダッシュ処理を行う
+            owner.MoveProc(owner.inputValue, owner.velocity, owner.maxDashVel, owner.dashACC);
+            // ダッシュ攻撃処理を行う
+            owner.dashColl.enabled = true;
+            // 時間を計測する
+            dashTimer += Time.deltaTime;
+            // 時間が一回のダッシュの時間を超えていたら
+            if(dashTimer > owner.dashTimeOnce)
             {
-                owner.ChangeMoveState(move);
+                // ダッシュ攻撃処理を終了する
+                owner.dashColl.enabled = false;
+                // フラグを折る
+                isDash = false;
             }
         }
     }

@@ -3,28 +3,28 @@ using UnityEngine;
 public partial class Player
 {
     /// <summary>
-    /// 通常の移動状態
+    /// 移動状態
+    /// 
+    /// この状態からの遷移先は
+    /// 待機状態
+    /// 走り状態
     /// </summary>
     public class StateMove : PlayerStateBase
     {
         public override void OnUpdate(Player owner)
         {
+            // 移動処理
             owner.MoveProc(owner.inputValue, owner.velocity, owner.maxNormalVel, owner.normalACC);
 
-            // ジャンプ状態に遷移
-            if(Input.GetKey(owner.jumpKey) && owner.isGround)
+            // 待機状態に遷移
+            if (owner.inputValue.x == 0 && owner.inputValue.y == 0)
             {
-                owner.ChangeMoveState(jump);
+                owner.ChangeState(idol);
             }
-            //通常状態に遷移
-            else if (owner.inputValue.x == 0 && owner.inputValue.y == 0)
+            // ダッシュ状態に遷移
+            else if (owner.IsDash())
             {
-                owner.ChangeMoveState(idol);
-            }
-            //ダッシュ状態に遷移
-            else if (Input.GetKey(owner.dashKey) && owner.isGround)
-            {
-                owner.ChangeMoveState(dash);
+                owner.ChangeState(dash);
             }
         }
     }

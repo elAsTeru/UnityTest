@@ -4,53 +4,95 @@ using UnityEngine;
 
 public partial class Player
 {
-    // 移動ステートのインスタンス
+    // メインステートのインスタンス
     private static readonly StateIdol idol = new StateIdol();
     private static readonly StateMove move = new StateMove();
     private static readonly StateDash dash = new StateDash();
+    // その他ステートのインスタンス
+    private static readonly StateSpin spinAtk = new StateSpin();
     private static readonly StateJump jump = new StateJump();
-    // 攻撃ステートのインスタンス
-    private static readonly StateIdolAtk idolAtk = new StateIdolAtk();
-    private static readonly StateDashAtk dashAtk = new StateDashAtk();
-    private static readonly StateSpinAtk spinAtk = new StateSpinAtk();
 
-    [Tooltip("移動系のステート")][SerializeField] PlayerStateBase moveState = idol;
-    [Tooltip("攻撃系のステート")][SerializeField] PlayerStateBase atkState = idolAtk;
+    [Tooltip("移動系のステート")][SerializeField] PlayerStateBase state  = idol;
     
-    [SerializeField] string nowMoveState = idol.ToString();   // 現在のステートを仮表示 // デバッグ用
-    [SerializeField] string nowAtkState = idol.ToString();   // 現在のステートを仮表示 // デバッグ用
-
+    [SerializeField] string nowState = idol.ToString();   // 現在のステートを仮表示 // デバッグ用
+    
     // Start()より実行
     private void OnStart()
     {
-        moveState.OnEnter(this, null);
-        atkState.OnEnter(this, null);
+        state.OnEnter(this, null);
     }
 
     // Update()より実行
     private void OnUpdate()
     {
-        moveState.OnUpdate(this);
-        atkState.OnUpdate(this);
+        if (IsJump())
+        {
+            ChangeState(jump);
+        }
+        else
+        {
+            state.OnUpdate(this);
+        }
+        HealStamina();
+        FaceFront();
     }
 
-    private void ChangeMoveState(PlayerStateBase _NextState)
+    private void ChangeState(PlayerStateBase _NextState)
     {
-        moveState.OnExit(this, _NextState);
-        _NextState.OnEnter(this, moveState);
-        moveState = _NextState;
+        state.OnExit(this, _NextState);
+        _NextState.OnEnter(this, state);
+        state = _NextState;
 
         //仮表示の現在のステートを変更
-        nowMoveState = moveState.ToString();
+        nowState = state.ToString();
     }
 
-    private void ChangeAtkState(PlayerStateBase _NextState)
+    private void HealStamina()
     {
-        atkState.OnExit(this, _NextState);
-        _NextState.OnEnter(this, atkState);
-        atkState = _NextState;
+        if(stamina < maxStamina && state != dash && isGround)
+        {
+            stamina += 1;
+            // 上限を超えてたらもとに戻す
+            if(stamina > maxStamina)
+            {
+                stamina = maxStamina;
+            }
+        }
+    }
 
-        //仮表示の現在のステートを変更
-        nowAtkState = atkState.ToString();
+    /// <summary>
+    /// 移動方向を向かせる関数
+    /// </summary>
+    private void FaceFront()
+    {
+        if(rb.velocity != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(rb.velocity);
+            Debug.DrawRay(this.transform.position, rb.velocity / 2, Color.blue);
+        }
+    }
+
+    /// <summary>
+    /// ジャンプ条件と遷移
+    /// </summary>
+    private bool IsJump()
+    {
+        // ジャンプキーが押された瞬間 && 接地している
+        if(Input.GetKeyDown(jumpKey) && isGround)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    // ダッシュ判定式
+    private bool IsDash()
+    {
+        // ダッシュ入力、接地、スタミナが足りるなら
+        if(Input.GetKey(dashKey) && isGround && stamina > subStamina)
+        {
+            return true;
+        }
+        return false;
     }
 }

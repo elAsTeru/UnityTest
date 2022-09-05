@@ -2,7 +2,7 @@ using UnityEngine;
 
 public partial class Player
 {
-    public class StateSpinAtk : PlayerStateBase
+    public class StateSpin : PlayerStateBase
     {
         public override void OnUpdate(Player owner)
         {
@@ -10,7 +10,7 @@ public partial class Player
             deltatime += Time.deltaTime;
             if(deltatime > 5.0f)
             {
-                owner.ChangeAtkState(idolAtk);
+                owner.ChangeState(idol);
             }
         }
     }
