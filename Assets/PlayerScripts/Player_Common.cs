@@ -17,7 +17,7 @@ public partial class Player : MonoBehaviour
     //設定項目
     Rigidbody rb;           // 物理
     float     maxStamina;   // 最大体力
-    float     stamina;      // 体力
+    [SerializeField]float     stamina;      // 体力
     float     subStamina;   // 体力減少量
     float     dashTimeOnce; // 一回のダッシュで強制的にダッシュになる時間
     float     maxNormalVel; // 通常移動の最高速度
@@ -25,12 +25,14 @@ public partial class Player : MonoBehaviour
     float     maxDashVel;   // ダッシュの最高速度
     float     dashACC;      // ダッシュの加速度
     float     jumpPower;    // ジャンプ力
+    float     spinTimeOnce; // 1回の回転攻撃にかかる時間
 
 
     //処理更新項目
     Vector2   inputValue;   // XYの入力量
     float     velocity;     // 移動速度
     bool      isGround;     // 接地判定
+    [SerializeField]float     timeCounter;  // 時間計測用タイマー
 
     private void Awake()
     {
@@ -72,6 +74,7 @@ public partial class Player : MonoBehaviour
         maxDashVel   = data.MaxDashVelocity;
         dashACC      = data.DashAcceleration;
         jumpPower    = data.JumpPower;
+        spinTimeOnce = data.SpinTmeOnce;
         // 当たり判定を無効化
         dashColl.enabled = false;
         spinColl.enabled = false;

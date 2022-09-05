@@ -22,7 +22,7 @@ public partial class Player
                 owner.ChangeState(idol);
             }
             // ƒ_ƒbƒVƒ…ó‘Ô‚É‘JˆÚ
-            else if (owner.IsDash())
+            else if (Input.GetKeyDown(owner.dashKey) && owner.isGround && owner.stamina > owner.subStamina)
             {
                 owner.ChangeState(dash);
             }

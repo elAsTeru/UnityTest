@@ -23,3 +23,4 @@ MonoBehaviour:
   JumpPower: 400
   DashAttackPower: 1000
   SpinAttackPower: 1500
+  SpinTmeOnce: 0.8

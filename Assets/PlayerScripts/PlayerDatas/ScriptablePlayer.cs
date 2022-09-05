@@ -26,4 +26,5 @@ public class ScriptablePlayer : ScriptableObject
     [Header("UŒ‚")]
     [Tooltip("ƒ_ƒbƒVƒ…UŒ‚—Í")]     public float DashAttackPower;
     [Tooltip("‰ñ“]UŒ‚—Í")]         public float SpinAttackPower;
+    [Tooltip("‰ñ“]ŠÔ")]           public float SpinTmeOnce;
 }

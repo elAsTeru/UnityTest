@@ -9,7 +9,7 @@ public partial class Player
     private static readonly StateMove move = new StateMove();
     private static readonly StateDash dash = new StateDash();
     // その他ステートのインスタンス
-    private static readonly StateSpin spinAtk = new StateSpin();
+    private static readonly StateSpin spin = new StateSpin();
     private static readonly StateJump jump = new StateJump();
 
     [Tooltip("移動系のステート")][SerializeField] PlayerStateBase state  = idol;
@@ -25,9 +25,13 @@ public partial class Player
     // Update()より実行
     private void OnUpdate()
     {
-        if (IsJump())
+        if (Input.GetKeyDown(jumpKey) && isGround && stamina > subStamina)
         {
             ChangeState(jump);
+        }
+        else if(Input.GetKeyDown(SpinKey))
+        {
+            ChangeState(spin);
         }
         else
         {
@@ -51,7 +55,7 @@ public partial class Player
     {
         if(stamina < maxStamina && state != dash && isGround)
         {
-            stamina += 1;
+            stamina += 0.1f;
             // 上限を超えてたらもとに戻す
             if(stamina > maxStamina)
             {
@@ -60,9 +64,7 @@ public partial class Player
         }
     }
 
-    /// <summary>
-    /// 移動方向を向かせる関数
-    /// </summary>
+    // 移動方向を向かせる関数
     private void FaceFront()
     {
         if(rb.velocity != Vector3.zero)
@@ -70,29 +72,5 @@ public partial class Player
             transform.rotation = Quaternion.LookRotation(rb.velocity);
             Debug.DrawRay(this.transform.position, rb.velocity / 2, Color.blue);
         }
-    }
-
-    /// <summary>
-    /// ジャンプ条件と遷移
-    /// </summary>
-    private bool IsJump()
-    {
-        // ジャンプキーが押された瞬間 && 接地している
-        if(Input.GetKeyDown(jumpKey) && isGround)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    // ダッシュ判定式
-    private bool IsDash()
-    {
-        // ダッシュ入力、接地、スタミナが足りるなら
-        if(Input.GetKey(dashKey) && isGround && stamina > subStamina)
-        {
-            return true;
-        }
-        return false;
     }
 }

@@ -4,12 +4,17 @@ public partial class Player
 {
     public class StateSpin : PlayerStateBase
     {
+        public override void OnEnter(Player owner, PlayerStateBase prevState)
+        {
+            owner.timeCounter = 0;
+            owner.spinColl.enabled = true;
+        }
         public override void OnUpdate(Player owner)
         {
-            float deltatime = 0.0f;
-            deltatime += Time.deltaTime;
-            if(deltatime > 5.0f)
+            owner.timeCounter += Time.deltaTime;
+            if(owner.timeCounter > owner.spinTimeOnce)
             {
+                owner.spinColl.enabled = false;
                 owner.ChangeState(idol);
             }
         }
