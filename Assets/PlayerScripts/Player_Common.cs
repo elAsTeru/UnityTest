@@ -4,15 +4,13 @@ using UnityEngine;
 
 public partial class Player : MonoBehaviour
 {
+    [Tooltip("プレイヤー管理")][SerializeField] PlayerMgr mgr;
     [Tooltip("情報")][SerializeField] ScriptablePlayer data;
     [Tooltip("プレイ番号")][SerializeField] short playerNumber = 1;
     [SerializeField] KeyCode dashKey = KeyCode.LeftShift;
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
     [SerializeField] KeyCode SpinKey = KeyCode.Return;
     [Tooltip("接地判定距離")][SerializeField] float groundJudgDist;
-    [Header("当たり判定")]
-    [Tooltip("ダッシュ攻撃あたり判定")][SerializeField] Collider dashColl;
-    [Tooltip("回転攻撃当たり判定")][SerializeField] Collider spinColl;
 
     //設定項目
     Rigidbody rb;           // 物理
@@ -26,6 +24,7 @@ public partial class Player : MonoBehaviour
     float     dashACC;      // ダッシュの加速度
     float     jumpPower;    // ジャンプ力
     float     spinTimeOnce; // 1回の回転攻撃にかかる時間
+    public ScriptablePlayer GetPlayerData() { return data; }
 
 
     //処理更新項目
@@ -63,8 +62,9 @@ public partial class Player : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void PlayerStart()
     {
+        mgr = GameObject.Find("PlayerMgr").GetComponent<PlayerMgr>();
         rb = GetComponent<Rigidbody>();
         stamina      = maxStamina =data.Stamina;
         subStamina   = data.StaminaSubValue;
@@ -74,14 +74,14 @@ public partial class Player : MonoBehaviour
         maxDashVel   = data.MaxDashVelocity;
         dashACC      = data.DashAcceleration;
         jumpPower    = data.JumpPower;
-        spinTimeOnce = data.SpinTmeOnce;
+        spinTimeOnce = data.SpinTimeOnce;
         // 当たり判定を無効化
         dashColl.enabled = false;
         spinColl.enabled = false;
         OnStart();      // プレイヤーの開始
     }
 
-    private void Update()
+    public void PlayerUpdate()
     {
         CheckIsGround();// 接地管理
         CheckXYInput(); // スティックや移動キーの入力更新

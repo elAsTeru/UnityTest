@@ -40,6 +40,8 @@ public partial class Player
             }
             // ダッシュ処理を行う
             owner.MoveProc(owner.inputValue, owner.velocity, owner.maxDashVel, owner.dashACC);
+            // 移動方向を向く処理
+            owner.FaceFront();
             // 時間を計測する
             dashTimer += Time.deltaTime;
             // 時間が一回のダッシュの時間を超えていたら

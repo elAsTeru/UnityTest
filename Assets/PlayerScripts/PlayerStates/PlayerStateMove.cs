@@ -15,6 +15,8 @@ public partial class Player
         {
             // ˆÚ“®ˆ—
             owner.MoveProc(owner.inputValue, owner.velocity, owner.maxNormalVel, owner.normalACC);
+            // ˆÚ“®•ûŒü‚ğŒü‚­ˆ—
+            owner.FaceFront();
 
             // ‘Ò‹@ó‘Ô‚É‘JˆÚ
             if (owner.inputValue.x == 0 && owner.inputValue.y == 0)

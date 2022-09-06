@@ -17,7 +17,7 @@ public partial class Player
     [SerializeField] string nowState = idol.ToString();   // 現在のステートを仮表示 // デバッグ用
     
     // Start()より実行
-    private void OnStart()
+    public void OnStart()
     {
         state.OnEnter(this, null);
     }
@@ -38,7 +38,6 @@ public partial class Player
             state.OnUpdate(this);
         }
         HealStamina();
-        FaceFront();
     }
 
     private void ChangeState(PlayerStateBase _NextState)
@@ -64,7 +63,7 @@ public partial class Player
         }
     }
 
-    // 移動方向を向かせる関数
+    // 移動方向を向かせる関数//Face...向く
     private void FaceFront()
     {
         if(rb.velocity != Vector3.zero)

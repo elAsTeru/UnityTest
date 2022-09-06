@@ -100,7 +100,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 66
+  controlID: 87
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 18
+  controlID: 152
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -300,7 +300,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 19
+  controlID: 153
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -326,7 +326,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 20
+  controlID: 154
 --- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -486,21 +486,21 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/PlayerScripts
+    - Assets/PlayerScripts/PlayerDatas
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/PlayerScripts
+  - Assets/PlayerScripts/PlayerDatas
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\elAsTeru\Desktop\repository\UnityTest
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 2c5a0000
-    m_LastClickedID: 23084
+    m_SelectedIDs: 345a0000
+    m_LastClickedID: 23092
     m_ExpandedIDs: 000000002c5a0000325a000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -657,23 +657,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 06fbffff
-      m_LastClickedID: -1274
+      m_SelectedIDs: ae590000
+      m_LastClickedID: 22958
       m_ExpandedIDs: 14fbffff38fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: Player
+        m_OriginalName: Player
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: -1260
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 5}
       m_SearchString: 
@@ -908,9 +908,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -1.8135933, y: 8.322386, z: -13.27119}
+    m_Target: {x: 15.467662, y: 2.9571104, z: -2.4944286}
     speed: 2
-    m_Value: {x: -1.8135933, y: 8.322386, z: -13.27119}
+    m_Value: {x: 15.467662, y: 2.9571104, z: -2.4944286}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -957,13 +957,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.30350512, y: 0.010276612, z: -0.0032518387, w: -0.95273393}
+    m_Target: {x: -0.23119186, y: 0.02654188, z: -0.006284152, w: -0.97249347}
     speed: 2
-    m_Value: {x: -0.30351523, y: 0.010276954, z: -0.003251947, w: -0.95276564}
+    m_Value: {x: -0.23119912, y: 0.026542714, z: -0.0062843496, w: -0.97252405}
   m_Size:
-    m_Target: 3.0850592
+    m_Target: 12.671261
     speed: 2
-    m_Value: 3.0850592
+    m_Value: 12.671261
   m_Ortho:
     m_Target: 0
     speed: 2

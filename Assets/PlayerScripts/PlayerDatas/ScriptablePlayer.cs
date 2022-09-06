@@ -15,16 +15,16 @@ public class ScriptablePlayer : ScriptableObject
     [Tooltip("通常移動の最高速度")] public float MaxNormalVelocity;
     [Tooltip("通常移動の加速度")]   public float NormalAcceleration;
     
-    [Header("ダッシュ移動")]
+    [Header("ダッシュ")]
     [Tooltip("1回のダッシュ時間")]  public float DashTimeOnce;
     [Tooltip("ダッシュの最高速度")] public float MaxDashVelocity;
     [Tooltip("ダッシュの加速度")]   public float DashAcceleration;
+    [Tooltip("ダッシュ攻撃力X:飛ぶ方向の力/Y:上向きの力")]     public Vector2 DashAtkForce;
 
     [Header("ジャンプ")]
     [Tooltip("ジャンプ力")]         public float JumpPower;
 
-    [Header("攻撃")]
-    [Tooltip("ダッシュ攻撃力")]     public float DashAttackPower;
-    [Tooltip("回転攻撃力")]         public float SpinAttackPower;
-    [Tooltip("回転時間")]           public float SpinTmeOnce;
+    [Header("回転")]
+    [Tooltip("回転時間")]           public float SpinTimeOnce;
+    [Tooltip("回転攻撃力X:飛ぶ方向の力/Y:上向きの力")]         public Vector2 SpinAtkForce;
 }
