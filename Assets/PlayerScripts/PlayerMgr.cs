@@ -9,16 +9,25 @@ public class PlayerMgr : MonoBehaviour
     [Tooltip("プレイヤー数")][SerializeField] const int player_num = 2;
     [Tooltip("プレイヤー情報")][SerializeField] List<GameObject> players;
     [Tooltip("プレイヤーのC#")][SerializeField] List<Player> playerCSs;
-    [Tooltip("タイマー")][SerializeField] float timer;
 
-    [SerializeField] float disableTime = 0.1f;  // 攻撃無効化できる時間
-    [SerializeField] float stopTime = 0.1f;
+    [SerializeField] float stopTime = 0.1f;     // 攻撃が当たった時に停止する時間
+    [Tooltip("タイマー")] float stopTimer;      // 攻撃が当たった時に使用するタイマー
+    GameObject hitter;
+
     public enum AtkState
     {
         Dash,
         Spin
     }
     public AtkState atkState;
+    Vector3 atkForce;                           // 関数が呼ばれたときに飛ばす力が入る
+
+    // 点滅処理
+    float blinkTime = 1.0f;         // 点滅時間
+    float blinkInterval = 0.1f;     // 点滅間隔
+    float blinkNextTime = 0;        // 次に点滅する時間
+    float blinkTimer = 0;           // 点滅時に使用するタイマー
+    [SerializeField] float disableTime = 0.1f;  // 攻撃無効化できる時間
 
     private void Awake()
     {
@@ -58,21 +67,78 @@ public class PlayerMgr : MonoBehaviour
     }
     private void Update()
     {
-        // プレイヤーの更新
-        for (int i = 0; i < player_num; ++i)
+        if (stopTimer == 0)
         {
-            playerCSs[i].PlayerUpdate();
+            // プレイヤーの更新
+            for (int i = 0; i < player_num; ++i)
+            {
+                playerCSs[i].PlayerUpdate();
+            }
+
+            // 点滅処理
+            if (blinkTimer != 0)
+            {
+                // 点滅するか判定して
+                if (blinkTimer <= blinkNextTime)
+                {
+                    // 次に点滅する時間を設定して
+                    blinkNextTime -= blinkInterval;
+                    if (hitter.GetComponent<MeshRenderer>().enabled)
+                    {
+                        hitter.GetComponent<MeshRenderer>().enabled = false;
+                    }
+                    else
+                    {
+                        hitter.GetComponent<MeshRenderer>().enabled = true;
+                    }
+                }
+                // 時間を経過させていき
+                blinkTimer -= Time.deltaTime;
+                // 時間が越えたら
+                if (blinkTimer <= 0)
+                {
+                    // 点滅を終了
+                    blinkTimer = 0;
+                    hitter.GetComponent<MeshRenderer>().enabled = true;
+                }
+            }
+        }
+        else
+        {
+            stopTimer -= Time.deltaTime;
+            // プレイヤーの動きを停止する
+            for (int i = 0; i < player_num; ++i)
+            {
+                players[i].GetComponent<Rigidbody>().isKinematic = true;
+            }
+            // 停止時間を過ぎたら0にしてあげることで、プレイヤーの更新に戻る
+            if (stopTimer <= 0.0f)
+            {
+                stopTimer = 0;
+                // プレイヤーの動きを再開する
+                for (int i = 0; i < player_num; ++i)
+                {
+                    players[i].GetComponent<Rigidbody>().isKinematic = false;
+                }
+                // 攻撃を受けたオブジェクトに作成した力を加える
+                hitter.GetComponent<Rigidbody>().AddForce(atkForce);
+            }
         }
     }
 
     // 攻撃処理
-    public void AttackProc(GameObject _Attacker, GameObject _Hitter, AtkState atkState)
+    // 攻撃処理
+    public void AttackProc(GameObject _Attacker, GameObject _Hitter, AtkState _AtkState)
     {
+        // 飛ばすときの処理のために記録しておく
+        hitter = _Hitter;
+        atkState = _AtkState;
+
         // -----攻撃を受けたオブジェクトの向きを変える処理-----
         Vector3 dir = _Hitter.transform.position - _Attacker.transform.position;
         _Hitter.transform.rotation = Quaternion.Euler(dir);
 
-        /// -----攻撃を受けたオブジェクトが飛ぶ処理-----
+        /// -----攻撃を受けたオブジェクトが飛ぶ力を求める処理-----
         Vector3 force;
         // xzを正規化
         force.y = 0;
@@ -88,41 +154,29 @@ public class PlayerMgr : MonoBehaviour
             force *= _Attacker.GetComponent<Player>().GetPlayerData().SpinAtkForce.x;
             force.y = _Attacker.GetComponent<Player>().GetPlayerData().SpinAtkForce.y;
         }
-        //// 攻撃を受けたオブジェクトに作成した力を加える
-        _Hitter.GetComponent<Rigidbody>().AddForce(force);
+        // 力を記録しておく
+        atkForce = force;
+        // 停止タイマーをセットする
+        stopTimer = stopTime;
+        // 点滅タイマーをセット
+        blinkTimer = blinkTime;
+        // 次の点滅時間をセット
+        blinkNextTime = blinkTime;
+
+        ////攻撃が当たったら当たった側のスタミナを減らす
+        //GameObject StaminaDown = GameObject.Find("PlayerStamina");
+        //StaminaDown.GetComponent<playerStamina>().StaminaDown(10.0f, hitter.GetComponent<Player>().GetPlayerNumber());
+        ////攻撃が当たったらヘイトも上げる
+        //GameObject HateUp = GameObject.Find("player01hate");
+        //HateUp.GetComponent<player01hate>().HateUp(10, hitter.GetComponent<Player>().GetPlayerNumber());
     }
-    
+
     // ゲームオブジェクトのオイラー角を取得する関数
     public Vector3 GetEuler(GameObject _Objct)
     {
         Quaternion qua = _Objct.transform.rotation;
         return qua.eulerAngles;
     }
-
-    //誰が誰に何をしたのか
-    //public void TellAttack(GameObject _Attacker,GameObject _Hitter, PlayerState.attack_state _AtkState)
-    //{
-    //    Debug.Log(_Attacker + "が" + _Hitter + "に" + _AtkState + "をした。");
-    //    //_Attackerの攻撃時の向きを取得し(クオータニオン)
-    //    Quaternion qur = _Attacker.transform.rotation;
-    //    //オイラーに変換
-    //    Vector3 eul = qur.eulerAngles;
-    //    //_Hitterの向きをY以外_Attackerの反対向きにする
-    //    eul = -1 * eul;
-    //    _Hitter.transform.rotation = Quaternion.Euler(eul);
-    //    ////xzの力を正規化
-    //    eul.y = 0;
-    //    eul = eul.normalized;
-    //    //飛ばす力を正規化したベクトルに乗算
-    //    eul *= addForceXZ;
-    //    //縦方向の力を設定値にして
-    //    eul.y = addForceY;
-    //    //_Hitterを作成したベクトルに方向にAddForce + 上向きの力も加えて
-    //    _Hitter.GetComponent<Rigidbody>().AddRelativeForce(eul);
-    //    //多分終わり 
-    //}
-    ////伝えられた後、設定された秒後に処理を行うことで、同時に攻撃した場合の処理などを行える
-    
 
     // 攻撃を無効化できる時間を0.1秒などで設定して
     // 最初の攻撃後カウント開始して、次の攻撃がその間になければ
